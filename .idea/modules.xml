@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Discount45/ScalaCode.iml" filepath="$PROJECT_DIR$/.idea/modules/Discount45/ScalaCode.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Discount45/ScalaCode.ScalaCode-build.iml" filepath="$PROJECT_DIR$/.idea/modules/Discount45/ScalaCode.ScalaCode-build.iml" />
+    </modules>
+  </component>
+</project>
