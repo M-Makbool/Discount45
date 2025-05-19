@@ -11,8 +11,9 @@ object Discount45 extends App {
 
   // Reads all transaction lines from the CSV file, skipping the header.
   val lines: List[String] = Source.fromFile("src/main/resources/TRX1000.csv").getLines().toList.tail
-
-    lines.map(toTransaction).map(addDiscount).foreach(OracleDB.write)
+  val processed_lines = lines.map(toTransaction).map(addDiscount)
+  processed_lines.foreach(OracleDB.write)
+  OracleDB.conn.close()
 
   /**
    * Applies all discount rules to a transaction, selects the top two discounts,
