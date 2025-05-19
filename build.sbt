@@ -10,6 +10,7 @@ lazy val root = (project in file("."))
 
 libraryDependencies += "org.scalameta" %% "munit" % "0.7.29" % Test
 libraryDependencies += "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4"
+libraryDependencies += "com.oracle.database.jdbc" % "ojdbc8" % "21.9.0.0"
 libraryDependencies ++= Seq(
     "org.apache.spark" %% "spark-core" % "3.4.0",
     "org.apache.spark" %% "spark-sql" % "3.4.0",
