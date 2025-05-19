@@ -1,0 +1,2 @@
+CREATE USER scalaDiscount IDENTIFIED BY 123;
+GRANT ALL PRIVILEGES TO scalaDiscount;
