@@ -2,18 +2,45 @@ package Project
 
 import scala.io.Source
 import TransactionHandler._
+import java.util.logging.Level
+import scala.util.{Try, Failure, Success}
 
 /**
  * The Discount45 object processes transactions by reading them from a CSV file,
  * applying discount rules, and calculating the final price after discount.
  */
 object Discount45 extends App {
+  val logger = log.setup()
+  logger.info("Starting transaction processing.")
 
   // Reads all transaction lines from the CSV file, skipping the header.
-  val lines: List[String] = Source.fromFile("src/main/resources/TRX1000.csv").getLines().toList.tail
-  val processed_lines = lines.map(toTransaction).map(addDiscount)
-  processed_lines.foreach(OracleDB.write)
-  OracleDB.conn.close()
+  val lines: List[String] = Try(Source.fromFile("src/main/resources/TRX1000.csv").getLines().toList.tail) match {
+    case Success(l) =>
+      logger.info(s"Read ${l.size} transaction lines from CSV.")
+      l
+    case Failure(e) =>
+      logger.log(Level.SEVERE, "Failed to read CSV file.", e)
+      sys.exit(1)
+  }
+
+  // Converts each CSV line to a Transaction, applies discount rules, and collects the processed transactions.
+  val processed_transactions = lines.map(toTransaction).map(addDiscount)
+
+  logger.info(s"Processed ${processed_transactions.size} transactions.")
+
+  // Writes each processed transaction to the Oracle database.
+  processed_transactions.foreach { tx =>
+    Try(OracleDB.write(tx)) match {
+      case Success(_) => logger.fine(s"Wrote transaction: ${tx.productName +" - "+tx.productDescription} with discount ${tx.discount*100}% and final price ${tx.finalPriceAfterDiscount} ")
+      case Failure(e) => logger.log(Level.WARNING, s"Failed to write transaction: ${tx.productName+" - "+tx.productDescription} with discount ${tx.discount*100}% and final price ${tx.finalPriceAfterDiscount}", e)
+    }
+  }
+
+  // Closes the Oracle database connection after all transactions are written.
+  Try(OracleDB.conn.close()) match {
+    case Success(_) => logger.info("Database connection closed.")
+    case Failure(e) => logger.log(Level.WARNING, "Failed to close database connection.", e)
+  }
 
   /**
    * Applies all discount rules to a transaction, selects the top two discounts,
