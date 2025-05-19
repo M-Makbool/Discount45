@@ -22,10 +22,8 @@ object DiscountRules {
    * @param product The transaction.
    * @return Discount as a decimal (e.g., 0.05 for 5%).
    */
-  def expiryDiscount(product: Transaction): Double = {
-    (30 - product.expiryDate.toEpochDay - product.transactionDate.toEpochDay)
-      .toDouble / 100
-  }
+  def expiryDiscount(product: Transaction): Double =
+    (30 - (product.expiryDate.toEpochDay - product.transactionDate.toEpochDay)).toDouble / 100
 
   /**
    * Checks if the cheese or wine discount applies.

@@ -1,0 +1,37 @@
+# SBT and Scala
+target/
+project/target/
+project/project/
+.cache/
+.history/
+lib_managed/
+src_managed/
+.idea/
+*.iml
+*.class
+*.log
+
+# VS Code
+.vscode/
+
+# MacOS
+.DS_Store
+
+# Eclipse
+.settings/
+.classpath
+.project
+
+# IntelliJ
+*.iws
+*.ipr
+*.bak
+out/
+
+# System Files
+Thumbs.db
+
+# Environment
+.env
+
+tmp/
